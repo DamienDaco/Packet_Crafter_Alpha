@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>327</width>
+    <height>436</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Packet Crafter</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>images/HAL-9000.png</normaloff>images/HAL-9000.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow{
+background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(203, 203, 203, 255), stop:1 rgba(255, 255, 255, 255));
+}
+QToolButton {
+background -color: transparent;
+border: none;
+}
+QToolButton:checked, QToolButton:pressed {
+background-color:rgb(193, 210, 238);
+border: 1px solid rgb(60, 127, 177);
+}
+QToolButton:hover {
+background-color: rgb(224, 232, 245);
+}
+QToolButton:checked:hover {
+background-color:rgb(193, 210, 238);
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="arp_tab">
+       <property name="toolTip">
+        <string extracomment="ARP packet forger">ARP packet forger</string>
+       </property>
+       <property name="statusTip">
+        <string>ARP</string>
+       </property>
+       <property name="whatsThis">
+        <string>ARP whatsthis</string>
+       </property>
+       <property name="accessibleName">
+        <string>accessible</string>
+       </property>
+       <property name="accessibleDescription">
+        <string>accessibledesc</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <attribute name="title">
+        <string>ARP</string>
+       </attribute>
+       <attribute name="toolTip">
+        <string>ARP packet forger</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="8" column="0" colspan="2">
+         <widget class="QLabel" name="gateway_label">
+          <property name="text">
+           <string>Gateway:</string>
+          </property>
+          <property name="buddy">
+           <cstring>gateway_mac_box</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0" colspan="3">
+         <widget class="QLineEdit" name="gateway_mac_box">
+          <property name="toolTip">
+           <string>Only specify a gateway if you want to do an MitM attack. Not required for normal queries.</string>
+          </property>
+          <property name="placeholderText">
+           <string>Gateway MAC</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="3" colspan="2">
+         <widget class="QLineEdit" name="source_ip_box">
+          <property name="toolTip">
+           <string>Internetwork address of the sender.</string>
+          </property>
+          <property name="statusTip">
+           <string>SPA</string>
+          </property>
+          <property name="placeholderText">
+           <string>Source IP</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLineEdit" name="hardware_length_box">
+          <property name="toolTip">
+           <string>Length (in octets) of a hardware address. Ethernet addresses size is 6.</string>
+          </property>
+          <property name="statusTip">
+           <string>HLEN</string>
+          </property>
+          <property name="placeholderText">
+           <string>0x06</string>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="0">
+         <widget class="QCheckBox" name="mitm_box">
+          <property name="toolTip">
+           <string>Enable MitM mode (Sending infinite gratuitous ARP replies)</string>
+          </property>
+          <property name="text">
+           <string>MitM</string>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>7</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="14" column="2" colspan="2">
+         <widget class="QPushButton" name="stop_arp_button">
+          <property name="text">
+           <string>Stop</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/Delete_48x48.png</normaloff>images/Delete_48x48.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="4">
+         <widget class="QPushButton" name="send_arp_button">
+          <property name="toolTip">
+           <string>Send!</string>
+          </property>
+          <property name="statusTip">
+           <string>Send the packet</string>
+          </property>
+          <property name="text">
+           <string>Send</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/Check_48x48.png</normaloff>images/Check_48x48.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QLabel" name="target_label">
+          <property name="text">
+           <string>Target addresses:</string>
+          </property>
+          <property name="buddy">
+           <cstring>target_mac_box</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="3" colspan="2">
+         <widget class="QLineEdit" name="target_ip_box">
+          <property name="toolTip">
+           <string>Internetwork address of the intended receiver.</string>
+          </property>
+          <property name="statusTip">
+           <string>TPA</string>
+          </property>
+          <property name="placeholderText">
+           <string>Target IP</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLineEdit" name="hardware_type_box">
+          <property name="toolTip">
+           <string>Hardware Type (HTYPE). Ethernet is 1.</string>
+          </property>
+          <property name="statusTip">
+           <string>HTYPE</string>
+          </property>
+          <property name="placeholderText">
+           <string>0x0001</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QLabel" name="source_label">
+          <property name="text">
+           <string>Source Addresses:</string>
+          </property>
+          <property name="buddy">
+           <cstring>source_mac_box</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0">
+         <widget class="QLineEdit" name="protocol_length_box">
+          <property name="toolTip">
+           <string>Length (in octets) of addresses used in the upper layer protocol. (The upper layer protocol specified in PTYPE.) IPv4 address size is 4.</string>
+          </property>
+          <property name="statusTip">
+           <string>PLEN</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string>0x04</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0" colspan="3">
+         <widget class="QLabel" name="advanced_label">
+          <property name="text">
+           <string>Advanced options:</string>
+          </property>
+          <property name="buddy">
+           <cstring>hardware_type_box</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="3">
+         <widget class="QLineEdit" name="source_mac_box">
+          <property name="toolTip">
+           <string>Media address of the sender. (E.g. MAC address)</string>
+          </property>
+          <property name="statusTip">
+           <string>SHA</string>
+          </property>
+          <property name="placeholderText">
+           <string>Source MAC</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="4">
+         <widget class="QLineEdit" name="protocol_type_box">
+          <property name="toolTip">
+           <string>Internet protocol. IPv4 = 0x0800</string>
+          </property>
+          <property name="statusTip">
+           <string>PTYPE</string>
+          </property>
+          <property name="placeholderText">
+           <string>0x0800</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="4">
+         <widget class="QLineEdit" name="operation_box">
+          <property name="toolTip">
+           <string>Specifies the operation that the sender is performing: 1 for request, 2 for reply.</string>
+          </property>
+          <property name="statusTip">
+           <string>OPER</string>
+          </property>
+          <property name="placeholderText">
+           <string>0x0001</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="4">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>127</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="7" column="0" colspan="3">
+         <widget class="QLineEdit" name="target_mac_box">
+          <property name="toolTip">
+           <string>Media address of the intended receiver. In an ARP request this field is ignored. In an ARP reply this field is used to indicate the address of the host that originated the ARP request.</string>
+          </property>
+          <property name="statusTip">
+           <string>THA</string>
+          </property>
+          <property name="placeholderText">
+           <string>Target MAC</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="3" colspan="2">
+         <widget class="QLineEdit" name="gateway_ip_box">
+          <property name="placeholderText">
+           <string>Gateway IP</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="4">
+         <widget class="QComboBox" name="interface_box"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tcp_tab">
+       <attribute name="title">
+        <string>TCP</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>327</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
