@@ -1,8 +1,7 @@
-
 #!/usr/bin/env python
 
-# Packet Crafter: Craft arbitrary packets
-# This tool allows you to craft weird packets with any value
+# Packet Crafter: Craft arbitrary ARP packets
+# This tool allows you to craft weird ARP packets with any value
 #
 # You can use this tool to craft weird ARP frames, or even do an arp poisoning attack (MitM)
 
@@ -14,30 +13,6 @@
 # This is a very early/alpha version
 
 # TODO: infinite ARP loop: should we let user specify frequency? Right now it's hardcoded at 1 second
-
-'''
-After several days of searching the web, this is BY FAR the best answer I've ever found.
-This guy solved all my multi threading problems:
-https://stackoverflow.com/questions/41526832/pyqt5-qthread-signal-not-working-gui-freeze
-'''
-
-# Check the very good answer here:
-# https://stackoverflow.com/questions/41526832/pyqt5-qthread-signal-not-working-gui-freeze
-# Since i added app.processEvents() , the gui is now responsive again,
-# but VERY sluggish
-
-# https://stackoverflow.com/questions/23854313/qthread-not-working-and-gui-still-hangs-up
-# Copy/paste from that thread:
-'''
-You're connecting the thread.started signal to a lambda:
-thread.started.connect(lambda: process_inst.execCmd())
-Using a normal python callable here will always cause the signal to be processed in the gui thread. That's understandable beacause the callable (lambda) doesn't have a thread affinity as QObjects have. From within the lambda the process_inst.execCmd method is then executed synchronously, it doesn't matter what thread affinity the object has. Therefore the GUI thread will block.
-If you want the signal to be received and processed within the worker threads event lopp, connect it to the slot directly.
-For this to work, you also need to make sure that you keep a reference to process_inst, otherwise it will be destroyed when it goes out of scope.
-With these adjustments your program works for me:
-thread.started.connect(process_inst.execCmd)
-thread.process_inst = process_inst
-'''
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
