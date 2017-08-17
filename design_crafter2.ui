@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>327</width>
-    <height>436</height>
+    <height>452</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,8 +40,8 @@ background-color:rgb(193, 210, 238);
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="styleSheet">
        <string notr="true"/>
@@ -321,10 +321,71 @@ background-color:rgb(193, 210, 238);
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tcp_tab">
+      <widget class="QWidget" name="cam_tab">
        <attribute name="title">
-        <string>TCP</string>
+        <string>CAM</string>
        </attribute>
+       <attribute name="toolTip">
+        <string>CAM Flooder</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QLabel" name="victim_ip_label">
+          <property name="text">
+           <string>Victim's IP:</string>
+          </property>
+          <property name="buddy">
+           <cstring>victim_ip_box</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QLineEdit" name="victim_ip_box"/>
+        </item>
+        <item row="1" column="2" colspan="2">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>128</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0" colspan="4">
+         <widget class="QTextBrowser" name="cam_text_browser"/>
+        </item>
+        <item row="3" column="0">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>102</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="QPushButton" name="stop_cam_button">
+          <property name="text">
+           <string>Stop</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QPushButton" name="start_cam_button">
+          <property name="text">
+           <string>Start</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -336,7 +397,7 @@ background-color:rgb(193, 210, 238);
      <x>0</x>
      <y>0</y>
      <width>327</width>
-     <height>27</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -22,3 +22,8 @@ With these adjustments your program works for me:
 thread.started.connect(process_inst.execCmd)
 thread.process_inst = process_inst
 '''
+
+'''
+Excellent method to redirect output to gui:
+https://stackoverflow.com/questions/8356336/how-to-capture-output-of-pythons-interpreter-and-show-in-a-text-widget
+'''

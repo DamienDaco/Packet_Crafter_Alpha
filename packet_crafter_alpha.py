@@ -26,7 +26,7 @@ import time
 # This is my GUI file, design_crafter.py
 # Created with Qt Designer, and converted from design_crafter.ui
 # with command line tool pyuic4
-# Command was:  pyuic4 design_crafter.ui > design_crafter.py
+# Command was:  pyuic4 design_crafter2.ui > design_crafter.py
 from design_crafter import Ui_MainWindow
 
 
@@ -66,11 +66,24 @@ class WorkerThread(QObject):
         self._is_running = False
 
 
+class EmittingStream(QObject):
+
+    textWritten = pyqtSignal(str)
+
+    def write(self, text):
+        self.textWritten.emit(str(text))
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
+
+        sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)           #Let's redirect console output to gui
+
+        self.text_output = QTextBrowser()                                           #Experimental secondary text output window
+        self.text_output.show()
 
         self.mitm = False
         self.threads = []
@@ -92,13 +105,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stop_arp_button.setDisabled(True)
         self.mitm_box.clicked.connect(self.toggle_mitm)
         self.interface_box.currentIndexChanged.connect(self.get_current_interface)
-
-        self.source_mac_box.setText(self.attacker_mac)
-        self.source_ip_box.setText(self.attacker_ip)
-        self.gateway_ip_box.setText(self.gateway_ip)
-        self.gateway_mac_box.setText(self.gateway_mac)
+        try:
+            self.source_mac_box.setText(self.attacker_mac)
+            self.source_ip_box.setText(self.attacker_ip)
+            self.gateway_ip_box.setText(self.gateway_ip)
+            self.gateway_mac_box.setText(self.gateway_mac)
+        except TypeError:
+            print "Could not find some ip or mac addresses. Please fill in the missing information."
 
         self.target_ip_box.editingFinished.connect(self.tpa_modified)
+
+    def __del__(self):                                  #This code is related to console output redirection to gui
+        # Restore sys.stdout
+        sys.stdout = sys.__stdout__
+
+    def normalOutputWritten(self, text):
+
+        cursor = self.text_output.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertText(text)
+        self.text_output.setTextCursor(cursor)
+        self.text_output.ensureCursorVisible()
+
+        # cursor = self.cam_text_browser.textCursor()
+        # cursor.movePosition(QTextCursor.End)
+        # cursor.insertText(text)
+        # self.cam_text_browser.setTextCursor(cursor)
+        # self.cam_text_browser.ensureCursorVisible()
+
+        #self.cam_text_browser.append(text)             #Append method is simple but produces tons of horrible newlines :(
+
 
     def tpa_modified(self):
         print "Help! I'm being modified"
@@ -199,20 +235,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.operation_box.setText("0x0001")
 
     def clean_mac(self, mac):
-
-        cleanmac = re.findall('[a-fA-F0-9]{2}', mac)
-        print "testing cleanmac", cleanmac
-        hexmac = [int(i, 16) for i in cleanmac]
-        print "hexmac is ", hexmac
-        binmac = pack('!6B', *hexmac)
-        return binmac
+        try:
+            cleanmac = re.findall('[a-fA-F0-9]{2}', mac)
+            print "testing cleanmac", cleanmac
+            hexmac = [int(i, 16) for i in cleanmac]
+            print "hexmac is ", hexmac
+            binmac = pack('!6B', *hexmac)
+            return binmac
+        except TypeError:
+            print "Could not process your MAC."
+        #return binmac
 
     def clean_ip(self, ip):
-
-        cleanip = re.findall('\d{1,3}', ip)
-        decimalip = [int(i) for i in cleanip]
-        binip = pack('!4B', *decimalip)
-        return binip
+        try:
+            cleanip = re.findall('\d{1,3}', ip)
+            decimalip = [int(i) for i in cleanip]
+            binip = pack('!4B', *decimalip)
+            return binip
+        except TypeError:
+            print "Could not process ip."
 
     def get_arp_values(self):
         # Let's extract the values from each QlineEdit field
@@ -275,8 +316,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # Same as above: without user input let's use ipv4 broadcast 255.255.255.255
                 self.target_ip = pack('!4B', *[0x00] * 4)
 
-            self.query_packet = self.hardware_type + self.protocol_type + self.hardware_length + self.protocol_length + \
+            try:
+                self.query_packet = self.hardware_type + self.protocol_type + self.hardware_length + self.protocol_length + \
                                 self.operation + self.source_mac + self.source_ip + self.target_mac + self.target_ip
+            except TypeError:
+                print "Could not forge packet. Please provide the victim's ip"
             # end of new code
 
         elif self.mitm:
@@ -358,8 +402,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.dest_mac = dest_mac
         # self.sender_mac = source_mac
         self.proto_arp = pack('!H', 0x806)
-        frame = dest_mac + source_mac + self.proto_arp
-        return frame
+        try:
+            frame = dest_mac + source_mac + self.proto_arp
+            return frame
+        except TypeError:
+            print "Could not forge frame. Please provide victim's ip and mac addresses"
 
     def show_popup(self, text, title, info, details):
 
