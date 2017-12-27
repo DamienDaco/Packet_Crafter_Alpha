@@ -4,7 +4,7 @@ Experimental version of Packet Crafter.
 DISCLAIMER: This app was made for ethical hacking labs.
 Please use responsibly. Improper usage of this kind of tool can get you prosecuted and/or fired.
 
-This is a GUI app to automate ARP spoofing/poisonning attacks.
+This is a GUI app to automate ARP spoofing/poisoning attacks.
 With this app, it is extremely simple to poison both the victim and the gateway.
 All the user has to do is to input the victim's IP, and the app will take care of the rest.
 
